@@ -106,7 +106,7 @@
   (set-selection-coding-system            'utf-8)
   (set-keyboard-coding-system        'utf-8-unix)
   (set-terminal-coding-system             'utf-8)
-  (prefer-coding-system                   'utf-8)))
+  (prefer-coding-system                   'utf-8))
 
 ;; Font
 (add-to-list 'default-frame-alist '(font . "Hack-11" ))
