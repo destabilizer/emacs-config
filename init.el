@@ -20,11 +20,25 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-view-program-list
+   (quote
+    (("Zathura MuPDF"
+      ("zathura --page=%(outpage) %o")
+      "zathura"))))
+ '(TeX-view-program-selection
+   (quote
+    (((output-dvi has-no-display-manager)
+      "dvi2tty")
+     ((output-dvi style-pstricks)
+      "dvips and gv")
+     (output-dvi "xdvi")
+     (output-pdf "Zathura MuPDF")
+     (output-html "xdg-open"))))
  '(TeX-view-program-selectionchktex-program (quote zathura) t)
  '(android-mode-sdk-dir "/opt/android-sdk/")
  '(package-selected-packages
    (quote
-    (ergoemacs-mode tidal arduino-mode android-mode auctex fancy-narrow base16-theme))))
+    (scala-mode smex marmalade-client ergoemacs-mode tidal arduino-mode android-mode auctex fancy-narrow base16-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -109,8 +123,8 @@
   (prefer-coding-system                   'utf-8))
 
 ;; Font
-(add-to-list 'default-frame-alist '(font . "Hack-11" ))
-(set-face-attribute 'default t :font "Hack-11" )
+(add-to-list 'default-frame-alist '(font . "Hack-12" ))
+(set-face-attribute 'default t :font "Hack-12" )
 
 ;; Linum plugin
 (require 'linum)
@@ -165,6 +179,21 @@
 (global-set-key (kbd "<f5>") 'bookmark-bmenu-list) ;; открыть список закладок
 (setq bookmark-default-file (concat user-emacs-directory "bookmarks")) ;; хранить закладки в файл bookmarks в .emacs.d
 
+;;; Keyboard features
+
+;; meta
+(setq x-hyper-keysym 'meta)
+
+;; ergoemacs
+(require 'ergoemacs-mode)
+(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme
+(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
+(ergoemacs-mode 1)
+
+;; M-x
+(smex-initialize)
+
+
 ;;; Extensions
 
 (setq extension-path "~/.emacs.d/scripts/")
@@ -176,12 +205,6 @@
 ;; Smooth scrolling
 (require 'smooth-scroll)
 (smooth-scroll-mode t)
-
-;; ergoemacs
-(require 'ergoemacs-mode)
-(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme
-(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
-(ergoemacs-mode 1)
 
 
 ;; (defcustom smooth-scroll/
@@ -207,3 +230,8 @@
 ;; SuperCollider
 ;(add-to-list 'load-path "/usr/share/emacs/site-lisp/SuperCollider/")
 (require 'sclang)
+
+;; Scala
+(use-package scala-mode
+  :interpreter
+  ("scala" . scala-mode))
