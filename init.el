@@ -20,25 +20,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-view-program-list
-   (quote
-    (("Zathura MuPDF"
-      ("zathura --page=%(outpage) %o")
-      "zathura"))))
- '(TeX-view-program-selection
-   (quote
-    (((output-dvi has-no-display-manager)
-      "dvi2tty")
-     ((output-dvi style-pstricks)
-      "dvips and gv")
-     (output-dvi "xdvi")
-     (output-pdf "Zathura MuPDF")
-     (output-html "xdg-open"))))
- '(TeX-view-program-selectionchktex-program (quote zathura) t)
- '(android-mode-sdk-dir "/opt/android-sdk/")
  '(package-selected-packages
    (quote
-    (scala-mode smex marmalade-client ergoemacs-mode tidal arduino-mode android-mode auctex fancy-narrow base16-theme))))
+    (parinfer smex ergoemacs-mode fancy-narrow base16-theme smooth-scroll))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -48,7 +32,7 @@
 
 ;;; My name and e-mail adress
 (setq user-full-name   "%Balaram Usov%")
-(setq user-mail-adress "%dest@disroot.org%")
+(setq user-mail-adress "%dest@disr.it%")
 
 ;;; Some preferences
 
@@ -123,8 +107,8 @@
   (prefer-coding-system                   'utf-8))
 
 ;; Font
-(add-to-list 'default-frame-alist '(font . "Hack-12" ))
-(set-face-attribute 'default t :font "Hack-12" )
+(add-to-list 'default-frame-alist '(font . "Hack-14" ))
+(set-face-attribute 'default t :font "Hack-14" )
 
 ;; Linum plugin
 (require 'linum)
@@ -182,7 +166,7 @@
 ;;; Keyboard features
 
 ;; meta
-(setq x-hyper-keysym 'meta)
+;; (setq x-hyper-keysym 'meta)
 
 ;; ergoemacs
 (require 'ergoemacs-mode)
@@ -213,25 +197,30 @@
 (global-set-key [(control  left)]  'scroll-right-1)
 (global-set-key [(control  right)] 'scroll-left-1)
 
-;; Sublimity
-(add-to-list 'load-path (concat extension-path "sublimity/"))
 
-(require 'sublimity)
-;(require 'sublimity-scroll)
-;(require 'sublimity-map) ;; experimental
-;(require 'sublimity-attractive)
+;; Lisp
 
-;; 
-(sublimity-mode 1)
+;;; parinfer
 
-;; Android Mode
-; (require 'android-mode)
+(use-package parinfer
+  :ensure t
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+             pretty-parens  ; different paren styles for different modes.
+             evil           ; If you use Evil.
+             lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
+             paredit        ; Introduce some paredit commands.
+             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+             smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
 
-;; SuperCollider
-;(add-to-list 'load-path "/usr/share/emacs/site-lisp/SuperCollider/")
-(require 'sclang)
+(setq parinfer-auto-switch-indent-mode t)
 
-;; Scala
-(use-package scala-mode
-  :interpreter
-  ("scala" . scala-mode))
