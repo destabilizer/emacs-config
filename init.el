@@ -22,7 +22,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (parinfer smex ergoemacs-mode fancy-narrow base16-theme smooth-scroll))))
+    (mastodon emojify racket-mode pollen-mode parinfer smex ergoemacs-mode fancy-narrow base16-theme smooth-scroll))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -53,6 +53,19 @@
  indent-tabs-mode nil
  tab-width 4
  c-basic-offset 4)
+
+;; Magic/Auto Modes
+
+(require 'pollen-mode)
+(require 'racket-mode)
+
+(add-to-list 'auto-mode-alist
+             '("\\.pm\\" . pollen-mode))
+
+(setq magic-mode-alist
+      (append '(("^#lang racket" . racket-mode)
+                ("^#lang pollen" . pollen-mode))
+              auto-mode-alist))
 
 ;; Electric-modes
 (electric-pair-mode    1)
@@ -184,7 +197,7 @@
 (add-to-list 'load-path extension-path)
 
 ;; Theme
-(load-theme 'base16-atelier-forest t)
+(load-theme 'base16-atelier-forest-light t)
 
 ;; Smooth scrolling
 (require 'smooth-scroll)
